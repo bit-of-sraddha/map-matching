@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Visualization with Mapbox</title>
+    <!-- Mapbox GL JS CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+    <!-- Custom CSS for sidebar and buttons -->
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        /* Additional styles for toll information */
+        .route-info-container {
+            margin-top: 15px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .route-option {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .route-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .route-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .toll-list {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        
+        .toll-comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .toll-comparison-table th, 
+        .toll-comparison-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .toll-comparison-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-interface"> 
+        <div id="route-panel-container"></div>
+    <!-- Sidebar -->
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
+        <div class="sidebar-content">
+            <div class="input-group">
+                <label for="start-input">Start:</label>
+                <input type="text" id="start-input" placeholder="Enter start location or lat,lon">
+            </div>
+            <div class="input-group">
+                <label for="end-input">End:</label>
+                <input type="text" id="end-input" placeholder="Enter end location or lat,lon">
+            </div>
+            <button onclick="calculateRoute()">Calculate Route</button>
+            <button onclick="toggle2D3D()">Toggle 2D/3D</button>
+            <button onclick="toggle3DBuildings()">Toggle 3D Buildings</button>
+            <button onclick="toggleTrafficCongestion()">Toggle Traffic Congestion</button>
+
+            <select id="map-style-select" onchange="changeMapStyle()">
+                <option value="mapbox://styles/mapbox/streets-v12">Streets</option>
+                <option value="mapbox://styles/mapbox/satellite-streets-v12">Satellite</option>
+                <option value="mapbox://styles/mapbox/light-v11">Light</option>
+                <option value="mapbox://styles/mapbox/dark-v11">Dark</option>
+                <option value="mapbox://styles/mapbox/outdoors-v12">Outdoors</option>
+                <option value="mapbox://styles/mapbox/navigation-day-v1">Navigation-day</option>
+                <option value="mapbox://styles/mapbox/navigation-night-v1">Navigation-night</option>
+            </select>
+            <button onclick="highlightHighways()">Highlight road</button>
+            <div class="rotate-container">
+                <div class="compass-icon" onclick="rotateMap()">
+                    <span>🧭</span> <!-- Compass emoji -->
+                </div>
+                <span id="rotation-degree">0°</span>
+            </div>
+            
+            <!-- New sections for route and toll information -->
+            <div id="route-info" class="route-info-container">
+                <h3>Route Options</h3>
+                <!-- Route info will be populated here by JavaScript -->
+            </div>
+            
+            <div id="toll-comparison" class="toll-comparison">
+                <!-- Toll comparison will be shown here -->
+            </div>
+            
+            <button id="compare-tolls-btn" class="btn" onclick="toggleRoutePanel()">Compare All Route Tolls</button>
+        </div>
+    </div>
+  
+    <!-- Map Container -->
+    <div id="map"></div>
+   
+</div>
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
